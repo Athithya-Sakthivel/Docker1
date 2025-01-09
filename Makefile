@@ -44,12 +44,12 @@ git-init:
 
 # Pull latest changes from remote to prevent conflicts
 git-pull:
-	@echo "Pulling latest changes from $(GIT_BRANCH)..."
+	@echo "Pulling latest changes from remote branch $(GIT_BRANCH)..."
 	@git fetch origin $(GIT_BRANCH)
 	@git pull --rebase origin $(GIT_BRANCH) || echo "Rebase conflict. Please resolve conflicts manually."
 
 # Push all files of this project to the specified GitHub repository
-git-push: git-init git-pull
+git-push: git-init
 	@echo "Pushing project files to GitHub repository $(GIT_REPO)..."
 	git add .
 	git commit -m "Automated commit via Makefile" || echo "No changes to commit."
