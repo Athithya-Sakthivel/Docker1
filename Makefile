@@ -7,7 +7,7 @@ GIT_BRANCH=main
 .PHONY: all docker-build docker-run install-requirements git-init git-pull git-push clean
 
 # Define the order of execution for "all"
-all: install-requirements docker-build docker-run
+all: git-init git-pull install-requirements docker-build docker-run git-push
 
 # Install Python dependencies if requirements.txt exists
 install-requirements:
@@ -24,7 +24,7 @@ docker-build:
 	docker build -t $(DOCKER_IMAGE) .
 
 # Run the Docker container for this project
-docker-run: docker-build
+docker-run:
 	@echo "Running Docker container for $(DOCKER_IMAGE)..."
 	docker run -d -p 8000:8000 $(DOCKER_IMAGE)
 
@@ -49,7 +49,7 @@ git-pull:
 	@git pull --rebase origin $(GIT_BRANCH) || echo "Rebase conflict. Please resolve conflicts manually."
 
 # Push all files of this project to the specified GitHub repository
-git-push: git-init
+git-push:
 	@echo "Pushing project files to GitHub repository $(GIT_REPO)..."
 	git add .
 	git commit -m "Automated commit via Makefile" || echo "No changes to commit."
