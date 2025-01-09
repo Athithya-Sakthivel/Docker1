@@ -42,12 +42,18 @@ git-init:
 		echo "Git repository already initialized."; \
 	fi
 
+# Pull latest changes from remote to prevent conflicts
+git-pull:
+	@echo "Pulling latest changes from $(GIT_BRANCH)..."
+	@git fetch origin $(GIT_BRANCH)
+	@git pull origin $(GIT_BRANCH) || echo "No changes to pull."
+
 # Push all files of this project to the specified GitHub repository
-git-push: git-init
+git-push: git-init git-pull
 	@echo "Pushing project files to GitHub repository $(GIT_REPO)..."
 	git add .
-	git commit -m "Automated commit via Makefile" || echo "No changes to commit"
-	git push origin $(GIT_BRANCH)
+	git commit -m "Automated commit via Makefile" || echo "No changes to commit."
+	@git push origin $(GIT_BRANCH) || echo "Push failed. Please resolve conflicts and try again."
 
 # Clean up Docker artifacts specific to this project
 clean:
