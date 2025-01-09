@@ -4,7 +4,7 @@ GIT_REPO=https://github.com/Athithya-Sakthivel/Docker1.git
 GIT_BRANCH=main
 
 # Phony targets to avoid naming conflicts
-.PHONY: all docker-build docker-run install-requirements git-init git-push clean
+.PHONY: all docker-build docker-run install-requirements git-init git-pull git-push clean
 
 # Define the order of execution for "all"
 all: install-requirements docker-build docker-run
@@ -46,7 +46,7 @@ git-init:
 git-pull:
 	@echo "Pulling latest changes from $(GIT_BRANCH)..."
 	@git fetch origin $(GIT_BRANCH)
-	@git pull origin $(GIT_BRANCH) || echo "No changes to pull."
+	@git pull --rebase origin $(GIT_BRANCH) || echo "Rebase conflict. Please resolve conflicts manually."
 
 # Push all files of this project to the specified GitHub repository
 git-push: git-init git-pull
